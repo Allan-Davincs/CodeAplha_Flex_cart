@@ -14,3 +14,7 @@ function updateCartCount() {
 
 // Run on page load
 updateCartCount();
+
+function isLoggedIn() {
+  return !!localStorage.getItem("token");
+}

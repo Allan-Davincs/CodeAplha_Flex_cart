@@ -24,6 +24,22 @@ const products = [
   }
 ];
 
+function addToCart(product) {
+  // 🔐 Require login
+  if (!isLoggedIn()) {
+    alert("Please login to add items to cart");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push(product);
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  updateCartCount();
+  alert("Added to cart ✅");
+}
+
 function renderProducts() {
   productList.innerHTML = "";
 
@@ -35,10 +51,19 @@ function renderProducts() {
       <img src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
       <p>$${product.price}</p>
-      <a href="product.html?id=${product.id}">
-        <button>View Details</button>
-      </a>
+
+      <div class="product-actions">
+        <a href="product.html?id=${product.id}">
+          <button class="btn-secondary">View Details</button>
+        </a>
+        <button class="btn-primary add-cart">Add to Cart</button>
+      </div>
     `;
+
+    // Add cart event
+    card.querySelector(".add-cart").addEventListener("click", () => {
+      addToCart(product);
+    });
 
     productList.appendChild(card);
   });
